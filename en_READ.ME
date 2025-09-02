@@ -1,0 +1,79 @@
+Interacting with Services (FTP)
+
+The code below allows you to interact with an FTP server (port 21) via socket, sending a username and password to see the server’s response.
+⚠️ For educational purposes only • Developed by M!ss s3c
+
+📝 Guide: Creating and Running Your First FTP Interaction Script
+
+1. Create the script file
+
+In the terminal, create the file:
+
+nano script4.7.py
+
+2. Add the Python code
+
+Paste the following code:
+
+#!/usr/bin/python3
+# FTP Server Interaction via Socket
+
+import socket
+
+print("Interacting with FTP Server")
+
+# Request the FTP server IP
+ip = input("Enter the IP: ")
+port = 21  # default FTP port
+
+# Create TCP socket
+meusocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+meusocket.settimeout(3)  # avoid hanging
+
+# Connect to the server and receive the banner
+meusocket.connect((ip, port))
+banner = meusocket.recv(1024)
+print(banner.decode().strip())
+
+# Send username
+print("Sending username")
+meusocket.send(str.encode('USER ricardo\r\n'))
+banner = meusocket.recv(1024)
+print(banner.decode().strip())
+
+# Send password
+print("Sending password")
+meusocket.send(str.encode("PASS ricardo\r\n"))
+banner = meusocket.recv(1024)
+print(banner.decode().strip())
+
+# Close the socket
+meusocket.close()
+
+
+⚠️ Note: This script should not be used on unauthorized systems. It is intended for educational purposes only.
+
+3. Run the script
+python3 script4.7.py
+
+4. Example output
+Interacting with FTP Server
+Received banner: 220 (vsFTPd 3.0.3)
+Sending username
+Response: 331 Please specify the password.
+Sending password
+Response: 230 Login successful.
+
+👉 What you learned here
+
+socket.socket() → creates a TCP socket.
+
+connect() → connects to the FTP server.
+
+recv(1024) → receives server responses (banner or messages).
+
+send() → sends commands to the service (USER, PASS).
+
+settimeout() → prevents hanging on slow or unresponsive servers.
+
+Always close() the socket → releases system resources.
